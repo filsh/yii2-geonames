@@ -17,9 +17,9 @@ class m150425_072531_init extends Migration
             'id' => Schema::TYPE_PK,
             'country' => Schema::TYPE_STRING . '(2) NOT NULL',
             'timezone' => Schema::TYPE_STRING . '(255) NOT NULL',
-            'offset_gmt' => Schema::TYPE_DECIMAL . '(1,1) NOT NULL',
-            'offset_dst' => Schema::TYPE_DECIMAL . '(1,1) NOT NULL',
-            'offset_raw' => Schema::TYPE_DECIMAL . '(1,1) NOT NULL',
+            'offset_gmt' => Schema::TYPE_DECIMAL . '(3,1) NOT NULL',
+            'offset_dst' => Schema::TYPE_DECIMAL . '(3,1) NOT NULL',
+            'offset_raw' => Schema::TYPE_DECIMAL . '(3,1) NOT NULL',
             'create_time' => Schema::TYPE_INTEGER . ' NOT NULL',
             'update_time' => Schema::TYPE_INTEGER . ' NOT NULL',
             'UNIQUE KEY (`country`, `timezone`)'

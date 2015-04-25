@@ -3,37 +3,50 @@
 namespace filsh\geonames;
 
 use filsh\yii2\runner\RunnerComponent;
+use yii\i18n\PhpMessageSource;
 
 class Bootstrap implements \yii\base\BootstrapInterface
 {
-    /** @var array Model's map */
+    /**
+     * @var array Model's map
+     */
     private $_modelMap = [
         'Timezones' => 'filsh\geonames\models\Timezones',
     ];
     
-    /** @inheritdoc */
+    /**
+     * @var array Runner's map
+     */
+    private $_runnerMap = [
+        'TimezoneRunner' => 'filsh\geonames\runners\TimezoneRunner',
+    ];
+    
+    /**
+     * @inheritdoc
+     */
     public function bootstrap($app)
     {
         /** @var $module Module */
         if ($app->hasModule('geonames') && ($module = $app->getModule('geonames')) instanceof Module) {
             $this->_modelMap = array_merge($this->_modelMap, $module->modelMap);
             foreach ($this->_modelMap as $name => $definition) {
-                $class = "filsh\\geonames\\models\\" . $name;
-                \Yii::$container->set($class, $definition);
-                $modelName = is_array($definition) ? $definition['class'] : $definition;
-                $module->modelMap[$name] = $modelName;
+                \Yii::$container->set("filsh\\geonames\\models\\" . $name, $definition);
+                $module->modelMap[$name] = is_array($definition) ? $definition['class'] : $definition;
             }
             
             if ($app instanceof \yii\console\Application) {
                 $module->controllerNamespace = 'filsh\geonames\commands';
+                
+                $this->_runnerMap = array_merge($this->_runnerMap, $module->runnerMap);
+                foreach ($this->_runnerMap as $name => $definition) {
+                    \Yii::$container->set("filsh\\geonames\\runners\\" . $name, $definition);
+                    $module->runnerMap[$name] = is_array($definition) ? $definition['class'] : $definition;
+                }
+                
                 $module->set('importer', [
                     'class' => RunnerComponent::className(),
-                    'runners' => [
-                        'timezones' => runners\TimezoneRunner::className()
-                    ]
+                    'runners' => $module->runnerMap
                 ]);
-            } else {
-                ;
             }
         }
     }
