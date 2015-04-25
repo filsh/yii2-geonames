@@ -2,6 +2,8 @@
 
 namespace filsh\geonames;
 
+use filsh\yii2\runner\RunnerComponent;
+
 class Bootstrap implements \yii\base\BootstrapInterface
 {
     /** @var array Model's map */
@@ -24,6 +26,12 @@ class Bootstrap implements \yii\base\BootstrapInterface
             
             if ($app instanceof \yii\console\Application) {
                 $module->controllerNamespace = 'filsh\geonames\commands';
+                $module->set('importer', [
+                    'class' => RunnerComponent::className(),
+                    'runners' => [
+                        'timezones' => runners\TimezoneRunner::className()
+                    ]
+                ]);
             } else {
                 ;
             }

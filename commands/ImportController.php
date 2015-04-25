@@ -6,6 +6,16 @@ use Yii;
 
 class ImportController extends \yii\console\Controller
 {
+    const TIMEZONES_SOURCE_URL = 'http://download.geonames.org/export/dump/timeZones.txt';
+    
+    public function beforeAction($action)
+    {
+        if(false === parent::beforeAction($action)) {
+            return false;
+        }
+        return $this->module->has('importer');
+    }
+    
     /**
      * Import timezones from specified source.
      *
@@ -16,8 +26,8 @@ class ImportController extends \yii\console\Controller
      */
     public function actionTimezones($sourceUrl = self::TIMEZONES_SOURCE_URL)
     {
-        Yii::$app->runner->run('timezones', [
-            'sourceUrl' => $sourceUrl
+        $this->module->importer->run('timezones', [
+            'dataReader' => $sourceUrl
         ]);
     }
 }
