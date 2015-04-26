@@ -3,6 +3,8 @@
 namespace filsh\geonames\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
+use filsh\geonames\Module;
 
 /**
  * This is the model class for table "{{%timezones}}".
@@ -15,10 +17,13 @@ use Yii;
  * @property string $offset_raw
  * @property integer $create_time
  * @property integer $update_time
+ *
+ * @property Countries $country0
  */
 class Timezones extends \yii\db\ActiveRecord
 {
     const SCENARIO_CREATE = 'create';
+    const SCENARIO_SEARCH = 'search';
     
     /**
      * @inheritdoc
@@ -64,7 +69,8 @@ class Timezones extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return [
-            self::SCENARIO_CREATE   => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw']
+            self::SCENARIO_CREATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'],
+            self::SCENARIO_SEARCH => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw']
         ];
     }
 
@@ -74,14 +80,38 @@ class Timezones extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'country' => 'Country',
-            'timezone' => 'Timezone',
-            'offset_gmt' => 'Offset Gmt',
-            'offset_dst' => 'Offset Dst',
-            'offset_raw' => 'Offset Raw',
-            'create_time' => 'Create Time',
-            'update_time' => 'Update Time',
+            'id' => Module::t('geonames', 'ID'),
+            'country' => Module::t('geonames', 'Country'),
+            'timezone' => Module::t('geonames', 'Timezone'),
+            'offset_gmt' => Module::t('geonames', 'Offset Gmt'),
+            'offset_dst' => Module::t('geonames', 'Offset Dst'),
+            'offset_raw' => Module::t('geonames', 'Offset Raw'),
+            'create_time' => Module::t('geonames', 'Create Time'),
+            'update_time' => Module::t('geonames', 'Update Time'),
         ];
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry0()
+    {
+        return $this->hasOne(Countries::className(), ['iso' => 'country']);
+    }
+    
+    /**
+     * @param $params
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => self::find(),
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        return $dataProvider;
     }
 }

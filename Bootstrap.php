@@ -3,7 +3,7 @@
 namespace filsh\geonames;
 
 use filsh\yii2\runner\RunnerComponent;
-use yii\i18n\PhpMessageSource;
+use yii\web\GroupUrlRule;
 
 class Bootstrap implements \yii\base\BootstrapInterface
 {
@@ -18,6 +18,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
      * @var array Runner's map
      */
     private $_runnerMap = [
+        'CountryRunner' => 'filsh\geonames\runners\CountryRunner',
         'TimezoneRunner' => 'filsh\geonames\runners\TimezoneRunner',
     ];
     
@@ -34,19 +35,21 @@ class Bootstrap implements \yii\base\BootstrapInterface
                 $module->modelMap[$name] = is_array($definition) ? $definition['class'] : $definition;
             }
             
-            if ($app instanceof \yii\console\Application) {
-                $module->controllerNamespace = 'filsh\geonames\commands';
-                
+            if(!$module->has('importer')) {
                 $this->_runnerMap = array_merge($this->_runnerMap, $module->runnerMap);
                 foreach ($this->_runnerMap as $name => $definition) {
                     \Yii::$container->set("filsh\\geonames\\runners\\" . $name, $definition);
                     $module->runnerMap[$name] = is_array($definition) ? $definition['class'] : $definition;
                 }
-                
+
                 $module->set('importer', [
                     'class' => RunnerComponent::className(),
                     'runners' => $module->runnerMap
                 ]);
+            }
+            
+            if ($app instanceof \yii\console\Application) {
+                $module->controllerNamespace = 'filsh\geonames\commands';
             }
         }
     }

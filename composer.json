@@ -18,7 +18,8 @@
     "minimum-stability": "dev",
     "require": {
         "yiisoft/yii2": "*",
-        "filsh/yii2-runner": "dev-master"
+        "filsh/yii2-runner": "dev-master",
+        "filsh/yii2-footable": "dev-master"
     },
     "autoload": {
         "psr-4": {

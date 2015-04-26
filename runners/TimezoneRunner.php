@@ -8,7 +8,9 @@ use filsh\geonames\helpers\FileHelper;
 
 class TimezoneRunner extends \filsh\yii2\runner\BaseRunner
 {
-    const TIMEZONES_SOURCE_URL = 'http://download.geonames.org/export/dump/timeZones.txt';
+    const SOURCE_URL = 'http://download.geonames.org/export/dump/timeZones.txt';
+    
+    public $tmpPath = '@runtime/runner/timezones';
     
     public function run()
     {
@@ -24,7 +26,7 @@ class TimezoneRunner extends \filsh\yii2\runner\BaseRunner
     
     protected function getSourceUrl()
     {
-        return self::TIMEZONES_SOURCE_URL;
+        return self::SOURCE_URL;
     }
     
     protected function resolveFile($file)
@@ -52,7 +54,7 @@ class TimezoneRunner extends \filsh\yii2\runner\BaseRunner
             /* @var $timezone Timezones */
             $timezone = Yii::createObject([
                 'class'    => Timezones::className(),
-                'scenario' => 'create',
+                'scenario' => Timezones::SCENARIO_CREATE,
             ]);
             $attributes = [
                 'country' => $data[0],

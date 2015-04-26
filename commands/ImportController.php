@@ -17,11 +17,22 @@ class ImportController extends \yii\console\Controller
     }
     
     /**
+     * Import countries from external source.
+     * This command load and parse countryinfo csv data file.
+     *
+     * @throws Exception if the path argument is invalid.
+     */
+    public function actionCountries()
+    {
+        $this->module->importer->run('CountryRunner');
+        
+        $this->stdout(Module::t('common', 'Countries has been imported') . "!\n", Console::FG_GREEN);
+    }
+    
+    /**
      * Import timezones from external source.
+     * This command load and parse timezones csv data file.
      *
-     * This command load and parse Maxmind timezones csv data file.
-     *
-     * @param string $sourceUrl the path of the destination source file.
      * @throws Exception if the path argument is invalid.
      */
     public function actionTimezones()

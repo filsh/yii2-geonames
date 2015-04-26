@@ -9,10 +9,24 @@ class Module extends \yii\base\Module
 {
     const VERSION = '0.0.1';
     
+    /**
+     * @var bool Whether to show flash messages.
+     */
+    public $enableFlashMessages;
+    
+    /**
+     * @var array Model's map
+     */
     public $modelMap = [];
     
+    /**
+     * @var array Runner's map
+     */
     public $runnerMap = [];
     
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
