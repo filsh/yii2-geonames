@@ -4,6 +4,7 @@ namespace filsh\geonames;
 
 use filsh\yii2\runner\RunnerComponent;
 use yii\web\GroupUrlRule;
+use yii\i18n\PhpMessageSource;
 
 class Bootstrap implements \yii\base\BootstrapInterface
 {
@@ -12,6 +13,8 @@ class Bootstrap implements \yii\base\BootstrapInterface
      */
     private $_modelMap = [
         'Timezones' => 'filsh\geonames\models\Timezones',
+        'Countries' => 'filsh\geonames\models\Countries',
+        'TimezoneSearch' => 'filsh\geonames\models\TimezoneSearch',
     ];
     
     /**
@@ -46,6 +49,13 @@ class Bootstrap implements \yii\base\BootstrapInterface
                     'class' => RunnerComponent::className(),
                     'runners' => $module->runnerMap
                 ]);
+            }
+            
+            if (!isset($app->get('i18n')->translations['geonames*'])) {
+                $app->get('i18n')->translations['geonames*'] = [
+                    'class'    => PhpMessageSource::className(),
+                    'basePath' => __DIR__ . '/messages',
+                ];
             }
             
             if ($app instanceof \yii\console\Application) {

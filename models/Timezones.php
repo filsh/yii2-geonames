@@ -23,7 +23,7 @@ use filsh\geonames\Module;
 class Timezones extends \yii\db\ActiveRecord
 {
     const SCENARIO_CREATE = 'create';
-    const SCENARIO_SEARCH = 'search';
+    const SCENARIO_UPDATE = 'update';
     
     /**
      * @inheritdoc
@@ -37,7 +37,11 @@ class Timezones extends \yii\db\ActiveRecord
                     self::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
                     self::EVENT_BEFORE_UPDATE => 'update_time',
                 ],
-            ]
+            ],
+            'translations' => [
+                'class' => 'dosamigos\translateable\TranslateableBehavior',
+                'translationAttributes' => ['title']
+            ],
         ];
     }
     
@@ -70,7 +74,7 @@ class Timezones extends \yii\db\ActiveRecord
     {
         return [
             self::SCENARIO_CREATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'],
-            self::SCENARIO_SEARCH => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw']
+            self::SCENARIO_UPDATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'],
         ];
     }
 
@@ -94,24 +98,16 @@ class Timezones extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCountry0()
+    public function getCountry()
     {
         return $this->hasOne(Countries::className(), ['iso' => 'country']);
     }
     
     /**
-     * @param $params
-     * @return ActiveDataProvider
+     * @return \yii\db\ActiveQuery
      */
-    public function search($params)
+    public function getTranslations()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => self::find(),
-        ]);
-
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
-        }
-        return $dataProvider;
+        return $this->hasMany(TimezoneTranslations::className(), ['timezone_id' => 'id']);
     }
 }

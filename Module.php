@@ -12,7 +12,7 @@ class Module extends \yii\base\Module
     /**
      * @var bool Whether to show flash messages.
      */
-    public $enableFlashMessages;
+    public $enableFlashMessages = true;
     
     /**
      * @var array Model's map

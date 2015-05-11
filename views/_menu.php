@@ -10,7 +10,8 @@ use filsh\geonames\Module;
 
 <?= Nav::widget([
     'options' => [
-        'class' => 'nav-tabs'
+        'class' => 'nav-tabs',
+        'style' => 'margin-bottom: 15px'
     ],
     'items' => [
         [

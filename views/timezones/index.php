@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'columns'      => [
         'country',
         'timezone',
+        ['attribute' => 'title', 'value' => 'translations.title'],
         'offset_gmt',
         'offset_dst',
         'offset_raw',
