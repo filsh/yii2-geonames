@@ -21,6 +21,22 @@ class TimezoneTranslations extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    self::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
+                    self::EVENT_BEFORE_UPDATE => 'update_time',
+                ],
+            ],
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return '{{%timezone_translations}}';
@@ -32,7 +48,7 @@ class TimezoneTranslations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['timezone_id', 'language', 'title', 'create_time', 'update_time'], 'required'],
+            [['timezone_id', 'language', 'title'], 'required'],
             [['timezone_id', 'create_time', 'update_time'], 'integer'],
             [['language'], 'string', 'max' => 6],
             [['title'], 'string', 'max' => 255]

@@ -26,8 +26,6 @@ class Timezones extends \yii\db\ActiveRecord
     const SCENARIO_UPDATE = 'update';
     const SCENARIO_UPDATE_TRANSLATIONS = 'update-translations';
     
-    public $translations;
-    
     /**
      * @inheritdoc
      */
@@ -46,6 +44,17 @@ class Timezones extends \yii\db\ActiveRecord
                 'translationAttributes' => ['title']
             ],
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributes()
+    {
+        return array_merge(
+            parent::attributes(),
+            ['translations']
+        );
     }
     
     /**
@@ -116,8 +125,20 @@ class Timezones extends \yii\db\ActiveRecord
         return $this->hasMany(TimezoneTranslations::className(), ['timezone_id' => 'id']);
     }
     
-    public function getLanguages()
+    public function saveTranslations()
     {
-        return ['en', 'ru'];
+        return $this->getDb()->transaction(function() {
+            TimezoneTranslations::deleteAll(['timezone_id' => $this->id]);
+
+            foreach($this->translations as $language => $translation) {
+                $this->language = $language;
+                $this->title = $translation;
+                
+                if(!$this->saveTranslation()) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 }

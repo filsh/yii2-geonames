@@ -25,6 +25,11 @@ class Module extends \yii\base\Module
     public $runnerMap = [];
     
     /**
+     * @var array
+     */
+    public $supportLanguages = ['en', 'ru'];
+    
+    /**
      * @inheritdoc
      */
     public function init()

@@ -25,14 +25,16 @@ use filsh\geonames\Module;
     ]); ?>
 
     <?php
-        foreach($model->getLanguages() as $language) {
+        foreach($this->context->module->supportLanguages as $language) {
             $model->language = $language;
-            ?>
-            <fieldset>
-                <legend><?= strtoupper($language) ?></legend>
-                <?= $form->field($model, 'title')->textInput(['name' => 'translations[' . $language . ']', 'maxlength' => true]) ?>
-            </fieldset>
-            <?php
+            
+            echo $form->field($model, 'title')
+                ->textInput([
+                    'id' => 'timezones-title-' . $language,
+                    'name' => Html::getInputName($model, 'translations') . '[' . $language . ']',
+                    'maxlength' => true
+                ])
+                ->label(strtoupper($language));
         }
     ?>
 

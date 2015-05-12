@@ -98,8 +98,8 @@ class TimezonesController extends \yii\web\Controller
 
         $this->performAjaxValidation($model);
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', Yii::t('geonames', 'Timezone details have been updated'));
+        if ($model->load(Yii::$app->request->post()) && $model->saveTranslations()) {
+            Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone translations have been updated'));
             return $this->refresh();
         } else {
             return $this->render('_translations', [

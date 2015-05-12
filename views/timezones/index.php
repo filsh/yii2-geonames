@@ -26,7 +26,22 @@ $this->params['breadcrumbs'][] = $this->title;
     'columns'      => [
         'country',
         'timezone',
-        ['attribute' => 'title', 'value' => 'translations.title'],
+        [
+            'attribute' => 'title',
+            'format' => 'raw',
+            'value' => function($model) {
+                $titles = [];
+                foreach($this->context->module->supportLanguages as $language) {
+                    $model->language = $language;
+                    if($model->title !== null) {
+                        $titles[] = strtoupper($language) . ': ' . $model->title;
+                    }
+                }
+                if(!empty($titles)) {
+                    return implode($titles, '</br>');
+                }
+            }
+        ],
         'offset_gmt',
         'offset_dst',
         'offset_raw',
