@@ -39,12 +39,17 @@ class TimezoneSearch extends Model
     public $offset_raw;
     
     /**
+     * @var integer
+     */
+    public $order_popular;
+    
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['country', 'timezone', 'title', 'offset_gmt', 'offset_dst', 'offset_raw'], 'safe'],
+            [['country', 'timezone', 'title', 'offset_gmt', 'offset_dst', 'offset_raw', 'order_popular'], 'safe'],
         ];
     }
 
@@ -75,7 +80,8 @@ class TimezoneSearch extends Model
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['offset_gmt' => $this->offset_gmt])
             ->andFilterWhere(['offset_dst' => $this->offset_dst])
-            ->andFilterWhere(['offset_raw' => $this->offset_raw]);
+            ->andFilterWhere(['offset_raw' => $this->offset_raw])
+            ->andFilterWhere(['order_popular' => $this->order_popular]);
         
         return $dataProvider;
     }

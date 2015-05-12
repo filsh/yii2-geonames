@@ -49,7 +49,7 @@ class TimezoneTranslations extends \yii\db\ActiveRecord
     {
         return [
             [['timezone_id', 'language', 'title'], 'required'],
-            [['timezone_id', 'create_time', 'update_time'], 'integer'],
+            [['timezone_id'], 'integer'],
             [['language'], 'string', 'max' => 6],
             [['title'], 'string', 'max' => 255]
         ];

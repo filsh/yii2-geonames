@@ -1,5 +1,6 @@
 <?php
 
+use Yii;
 use filsh\geonames\Module;
 use filsh\geonames\models\Timezones;
 use yii\data\ActiveDataProvider;
@@ -31,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'value' => function($model) {
                 $titles = [];
-                foreach($this->context->module->supportLanguages as $language) {
+                foreach(Yii::$app->controller->module->supportLanguages as $language) {
                     $model->language = $language;
                     if($model->title !== null) {
                         $titles[] = strtoupper($language) . ': ' . $model->title;
@@ -45,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'offset_gmt',
         'offset_dst',
         'offset_raw',
+        'order_popular',
         [
             'class'      => ActionColumn::className(),
             'template'   => '{update} {delete}',

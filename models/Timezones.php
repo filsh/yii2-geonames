@@ -15,6 +15,7 @@ use filsh\geonames\Module;
  * @property string $offset_gmt
  * @property string $offset_dst
  * @property string $offset_raw
+ * @property integer $order_popular
  * @property integer $create_time
  * @property integer $update_time
  *
@@ -73,6 +74,7 @@ class Timezones extends \yii\db\ActiveRecord
         return [
             [['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'], 'required'],
             [['offset_gmt', 'offset_dst', 'offset_raw'], 'number'],
+            [['order_popular'], 'integer'],
             [['country'], 'string', 'max' => 2],
             [['timezone'], 'string', 'max' => 255],
             [['country', 'timezone'], 'unique', 'targetAttribute' => ['country', 'timezone'], 'message' => 'The combination of Country and Timezone has already been taken.'],
@@ -86,8 +88,8 @@ class Timezones extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return [
-            self::SCENARIO_CREATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'],
-            self::SCENARIO_UPDATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'],
+            self::SCENARIO_CREATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw', 'order_popular'],
+            self::SCENARIO_UPDATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw', 'order_popular'],
             self::SCENARIO_UPDATE_TRANSLATIONS => ['translations'],
         ];
     }
@@ -104,6 +106,7 @@ class Timezones extends \yii\db\ActiveRecord
             'offset_gmt' => Module::t('geonames', 'Offset Gmt'),
             'offset_dst' => Module::t('geonames', 'Offset Dst'),
             'offset_raw' => Module::t('geonames', 'Offset Raw'),
+            'order_popular' => Module::t('geonames', 'Order Popular'),
             'create_time' => Module::t('geonames', 'Create Time'),
             'update_time' => Module::t('geonames', 'Update Time'),
         ];

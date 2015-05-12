@@ -6,6 +6,7 @@
  * and open the template in the editor.
  */
 
+use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use filsh\geonames\Module;
@@ -25,7 +26,7 @@ use filsh\geonames\Module;
     ]); ?>
 
     <?php
-        foreach($this->context->module->supportLanguages as $language) {
+        foreach(Yii::$app->controller->module->supportLanguages as $language) {
             $model->language = $language;
             
             echo $form->field($model, 'title')

@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use yii\web\NotFoundHttpException;
 use filsh\geonames\Module;
 use filsh\geonames\models\Timezones;
 use filsh\geonames\models\TimezoneSearch;
@@ -106,6 +107,20 @@ class TimezonesController extends \yii\web\Controller
                 'model' => $model,
             ]);
         }
+    }
+    
+    /**
+     * Deletes an existing Timezones model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param  integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+        Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone has been deleted'));
+        
+        return $this->redirect(['index']);
     }
     
     /**

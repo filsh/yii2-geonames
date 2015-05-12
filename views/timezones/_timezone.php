@@ -15,3 +15,5 @@
 <?= $form->field($model, 'offset_dst')->textInput(['maxlength' => true]) ?>
 
 <?= $form->field($model, 'offset_raw')->textInput(['maxlength' => true]) ?>
+
+<?= $form->field($model, 'order_popular')->textInput(['maxlength' => true]) ?>
