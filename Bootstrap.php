@@ -51,13 +51,6 @@ class Bootstrap implements \yii\base\BootstrapInterface
                 ]);
             }
             
-            if (!isset($app->get('i18n')->translations['geonames*'])) {
-                $app->get('i18n')->translations['geonames*'] = [
-                    'class'    => PhpMessageSource::className(),
-                    'basePath' => __DIR__ . '/messages',
-                ];
-            }
-            
             if ($app instanceof \yii\console\Application) {
                 $module->controllerNamespace = 'filsh\geonames\commands';
             }

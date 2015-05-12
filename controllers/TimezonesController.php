@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use filsh\geonames\Module;
 use filsh\geonames\models\Timezones;
 use filsh\geonames\models\TimezoneSearch;
 
@@ -75,7 +76,7 @@ class TimezonesController extends \yii\web\Controller
         $this->performAjaxValidation($model);
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', Yii::t('geonames', 'Timezone details have been updated'));
+            Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone details have been updated'));
             return $this->refresh();
         } else {
             return $this->render('_details', [
@@ -93,7 +94,7 @@ class TimezonesController extends \yii\web\Controller
     public function actionUpdateTranslations($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = Timezones::SCENARIO_UPDATE;
+        $model->scenario = Timezones::SCENARIO_UPDATE_TRANSLATIONS;
 
         $this->performAjaxValidation($model);
         
@@ -101,7 +102,7 @@ class TimezonesController extends \yii\web\Controller
             Yii::$app->getSession()->setFlash('success', Yii::t('geonames', 'Timezone details have been updated'));
             return $this->refresh();
         } else {
-            return $this->render('_details', [
+            return $this->render('_translations', [
                 'model' => $model,
             ]);
         }

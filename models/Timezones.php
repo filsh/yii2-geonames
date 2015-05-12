@@ -24,6 +24,9 @@ class Timezones extends \yii\db\ActiveRecord
 {
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
+    const SCENARIO_UPDATE_TRANSLATIONS = 'update-translations';
+    
+    public $translations;
     
     /**
      * @inheritdoc
@@ -63,7 +66,8 @@ class Timezones extends \yii\db\ActiveRecord
             [['offset_gmt', 'offset_dst', 'offset_raw'], 'number'],
             [['country'], 'string', 'max' => 2],
             [['timezone'], 'string', 'max' => 255],
-            [['country', 'timezone'], 'unique', 'targetAttribute' => ['country', 'timezone'], 'message' => 'The combination of Country and Timezone has already been taken.']
+            [['country', 'timezone'], 'unique', 'targetAttribute' => ['country', 'timezone'], 'message' => 'The combination of Country and Timezone has already been taken.'],
+            [['translations'], 'safe']
         ];
     }
     
@@ -75,6 +79,7 @@ class Timezones extends \yii\db\ActiveRecord
         return [
             self::SCENARIO_CREATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'],
             self::SCENARIO_UPDATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'],
+            self::SCENARIO_UPDATE_TRANSLATIONS => ['translations'],
         ];
     }
 
@@ -109,5 +114,10 @@ class Timezones extends \yii\db\ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(TimezoneTranslations::className(), ['timezone_id' => 'id']);
+    }
+    
+    public function getLanguages()
+    {
+        return ['en', 'ru'];
     }
 }
