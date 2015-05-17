@@ -12,7 +12,7 @@ class TimezoneRunner extends \filsh\yii2\runner\BaseRunner
     
     public $tmpPath = '@runtime/runner/timezones';
     
-    public function run()
+    protected function doRun()
     {
         FileHelper::loadFile($this->getSourceUrl(), [
             'destDir' => $this->tmpPath,

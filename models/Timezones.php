@@ -42,6 +42,7 @@ class Timezones extends \yii\db\ActiveRecord
             ],
             'translations' => [
                 'class' => 'dosamigos\translateable\TranslateableBehavior',
+                'relation' => 'timezoneTranslations',
                 'translationAttributes' => ['title']
             ],
         ];
@@ -123,7 +124,15 @@ class Timezones extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTranslations()
+    public function getTimezoneTranslation()
+    {
+        return $this->hasOne(TimezoneTranslations::className(), ['timezone_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTimezoneTranslations()
     {
         return $this->hasMany(TimezoneTranslations::className(), ['timezone_id' => 'id']);
     }

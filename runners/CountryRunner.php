@@ -12,7 +12,7 @@ class CountryRunner extends \filsh\yii2\runner\BaseRunner
     
     public $tmpPath = '@runtime/runner/countries';
     
-    public function run()
+    protected function doRun()
     {
         FileHelper::loadFile($this->getSourceUrl(), [
             'destDir' => $this->tmpPath,
