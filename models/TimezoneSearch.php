@@ -60,7 +60,7 @@ class TimezoneSearch extends Model
     public function search($params)
     {
         $query = Timezones::find();
-        $query->joinWith(['translations']);
+        $query->joinWith(['timezoneTranslation']);
         
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

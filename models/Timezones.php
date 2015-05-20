@@ -146,9 +146,7 @@ class Timezones extends \yii\db\ActiveRecord
                 $this->language = $language;
                 $this->title = $translation;
                 
-                if(!$this->saveTranslation()) {
-                    return false;
-                }
+                $this->saveTranslation();
             }
             return true;
         });
