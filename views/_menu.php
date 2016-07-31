@@ -15,12 +15,12 @@ use filsh\geonames\Module;
     ],
     'items' => [
         [
-            'label'   => Module::t('geonames', 'Timezones'),
-            'url'     => ['/geonames/timezones/index']
-        ],
-        [
             'label'   => Module::t('geonames', 'Countries'),
             'url'     => ['/geonames/countries/index']
+        ],
+        [
+            'label'   => Module::t('geonames', 'Timezones'),
+            'url'     => ['/geonames/timezones/index']
         ],
     ]
 ]) ?>
