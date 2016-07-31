@@ -9,11 +9,8 @@ class CountriesController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        /* @var $filterModel Countries */
-        $filterModel = Yii::createObject([
-            'class'    => Country::className(),
-            'scenario' => Country::SCENARIO_SEARCH,
-        ]);
+        /* @var $filterModel Country */
+        $filterModel = Yii::createObject(Country::class);
         $dataProvider = $filterModel->search(Yii::$app->request->get());
 
         return $this->render('index', [

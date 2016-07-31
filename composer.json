@@ -19,7 +19,7 @@
     "require": {
         "yiisoft/yii2": "*",
         "filsh/yii2-runner": "dev-master",
-        "2amigos/yii2-translateable-behavior" : "*"
+        "creocoder/yii2-translateable": "^1.0"
     },
     "autoload": {
         "psr-4": {

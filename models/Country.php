@@ -2,9 +2,9 @@
 
 namespace filsh\geonames\models;
 
-use Yii;
-use filsh\geonames\Module;
 use yii\data\ActiveDataProvider;
+use yii\behaviors\TimestampBehavior;
+use filsh\geonames\Module;
 
 /**
  * This is the model class for table "{{%countries}}".
@@ -29,29 +29,20 @@ use yii\data\ActiveDataProvider;
  * @property integer $geoname_id
  * @property string $neighbours
  * @property string $equivalent_fips_code
- * @property integer $create_time
- * @property integer $update_time
+ * @property integer $created_at
+ * @property integer $updated_at
  *
  * @property Timezone[] $timezones
  */
 class Country extends \yii\db\ActiveRecord
 {
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_SEARCH = 'search';
-
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
         return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'attributes' => [
-                    self::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
-                    self::EVENT_BEFORE_UPDATE => 'update_time',
-                ],
-            ]
+            TimestampBehavior::class,
         ];
     }
 
@@ -83,17 +74,6 @@ class Country extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
-        return [
-            self::SCENARIO_CREATE => ['iso', 'iso3', 'iso_numeric', 'fips', 'name', 'capital', 'area', 'population', 'continent', 'tld', 'currency_code', 'currency_name', 'phone_code', 'postal_code_format', 'postal_code_regex', 'languages', 'geoname_id', 'neighbours', 'equivalent_fips_code'],
-            self::SCENARIO_SEARCH => ['iso', 'iso3', 'iso_numeric', 'fips', 'name', 'capital', 'area', 'population', 'continent', 'tld', 'currency_code', 'currency_name', 'phone_code', 'postal_code_format', 'postal_code_regex', 'languages', 'geoname_id', 'neighbours', 'equivalent_fips_code']
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
@@ -117,8 +97,8 @@ class Country extends \yii\db\ActiveRecord
             'geoname_id' => Module::t('geonames', 'Geoname ID'),
             'neighbours' => Module::t('geonames', 'Neighbours'),
             'equivalent_fips_code' => Module::t('geonames', 'Equivalent Fips Code'),
-            'create_time' => Module::t('geonames', 'Create Time'),
-            'update_time' => Module::t('geonames', 'Update Time'),
+            'created_at' => Module::t('geonames', 'Create Time'),
+            'updated_at' => Module::t('geonames', 'Update Time'),
         ];
     }
 
@@ -127,7 +107,7 @@ class Country extends \yii\db\ActiveRecord
      */
     public function getTimezones()
     {
-        return $this->hasMany(Timezone::className(), ['country' => 'iso']);
+        return $this->hasMany(Timezone::class, ['country' => 'iso']);
     }
 
     /**

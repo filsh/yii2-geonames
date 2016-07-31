@@ -75,6 +75,6 @@ class TimezoneTranslations extends \yii\db\ActiveRecord
      */
     public function getTimezone()
     {
-        return $this->hasOne(Timezone::className(), ['id' => 'timezone_id']);
+        return $this->hasOne(Timezone::class, ['id' => 'timezone_id']);
     }
 }

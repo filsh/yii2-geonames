@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'neighbours',
         'equivalent_fips_code',
         [
-            'class'      => ActionColumn::className(),
+            'class'      => ActionColumn::class,
             'template'   => '{update} {delete}',
             'urlCreator' => function ($action, $model) {
                 return Url::to(['countries/' . $action, 'id' => $model['id']]);

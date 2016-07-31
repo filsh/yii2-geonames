@@ -1,10 +1,16 @@
 <?php
 
+use filsh\geonames\Module;
+
 /**
  * @var yii\widgets\ActiveForm    $form
  * @var filsh\geonames\models\Timezone $model
  */
 ?>
+
+<?php foreach(Module::getInstance()->supportLanguages as $language) {
+    echo $form->field($model->translate($language), "[$language]title")->textInput(['maxlength' => true]);
+} ?>
 
 <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
 

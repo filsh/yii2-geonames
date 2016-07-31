@@ -12,7 +12,6 @@ class Bootstrap implements \yii\base\BootstrapInterface
     private $_modelMap = [
         'Timezone' => 'filsh\geonames\models\Timezone',
         'Country' => 'filsh\geonames\models\Country',
-        'TimezoneSearch' => 'filsh\geonames\models\TimezoneSearch',
     ];
 
     /**
@@ -44,7 +43,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
                 }
 
                 $module->set('importer', [
-                    'class' => RunnerComponent::className(),
+                    'class' => RunnerComponent::class,
                     'runners' => $module->runnerMap
                 ]);
             }

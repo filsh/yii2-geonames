@@ -31,10 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'value' => function($model) {
                 $titles = [];
-                foreach(Yii::$app->controller->module->supportLanguages as $language) {
-                    $model->language = $language;
-                    if($model->title !== null) {
-                        $titles[] = strtoupper($language) . ': ' . $model->title;
+                foreach(Module::getInstance()->supportLanguages as $language) {
+                    if(($title = $model->translate($language)->title) !== null) {
+                        $titles[] = $title . '(' . $language . ')';
                     }
                 }
                 if(!empty($titles)) {
@@ -47,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'offset_raw',
         'order_popular',
         [
-            'class'      => ActionColumn::className(),
+            'class'      => ActionColumn::class,
             'template'   => '{update} {delete}',
             'urlCreator' => function ($action, $model) {
                 return Url::to(['timezones/' . $action, 'id' => $model['id']]);

@@ -9,7 +9,6 @@ use yii\widgets\ActiveForm;
 use yii\web\NotFoundHttpException;
 use filsh\geonames\Module;
 use filsh\geonames\models\Timezone;
-use filsh\geonames\models\TimezoneSearch;
 
 class TimezonesController extends \yii\web\Controller
 {
@@ -17,7 +16,7 @@ class TimezonesController extends \yii\web\Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                 ],
@@ -31,8 +30,8 @@ class TimezonesController extends \yii\web\Controller
      */
     public function actionIndex()
     {
-        /* @var $filterModel TimezoneSearch */
-        $filterModel = Yii::createObject(TimezoneSearch::className());
+        /* @var $filterModel Timezone */
+        $filterModel = Yii::createObject(Timezone::class);
         $dataProvider = $filterModel->search(Yii::$app->request->get());
 
         return $this->render('index', [
@@ -49,10 +48,13 @@ class TimezonesController extends \yii\web\Controller
     public function actionCreate()
     {
         /** @var Timezone $model */
-        $model = Yii::createObject([
-            'class'    => Timezone::className(),
-            'scenario' => Timezone::SCENARIO_CREATE,
-        ]);
+        $model = Yii::createObject(Timezone::class);
+
+        foreach (Yii::$app->request->post('Translation', []) as $language => $data) {
+            foreach ($data as $attribute => $translation) {
+                $model->translate($language)->$attribute = $translation;
+            }
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -72,38 +74,19 @@ class TimezonesController extends \yii\web\Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = Timezone::SCENARIO_UPDATE;
-
         $this->performAjaxValidation($model);
+
+        foreach (Yii::$app->request->post('Translation', []) as $language => $data) {
+            foreach ($data as $attribute => $translation) {
+                $model->translate($language)->$attribute = $translation;
+            }
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone details have been updated'));
             return $this->refresh();
         } else {
             return $this->render('_details', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an translations for existing Timezone model.
-     * If update is successful, the browser will be refreshed page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdateTranslations($id)
-    {
-        $model = $this->findModel($id);
-        $model->scenario = Timezone::SCENARIO_UPDATE_TRANSLATIONS;
-
-        $this->performAjaxValidation($model);
-
-        if ($model->load(Yii::$app->request->post()) && $model->saveTranslations()) {
-            Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone translations have been updated'));
-            return $this->refresh();
-        } else {
-            return $this->render('_translations', [
                 'model' => $model,
             ]);
         }
@@ -133,7 +116,8 @@ class TimezonesController extends \yii\web\Controller
     protected function findModel($id)
     {
         /** @var Timezone $model */
-        $model = Yii::createObject(Timezone::className());
+        $model = Yii::createObject(Timezone::class);
+        $model = $model::find()->with('translations')->where(['id' => $id])->one();
         if (($model = $model::findOne($id)) !== null) {
             return $model;
         } else {

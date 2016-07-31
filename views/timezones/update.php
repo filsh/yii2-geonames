@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = Module::t('geonames', 'Update');
                     ],
                     'items' => [
                         ['label' => Module::t('geonames', 'Timezone details'), 'url' => ['/geonames/timezones/update', 'id' => $model->id]],
-                        ['label' => Module::t('geonames', 'Timezone translations'), 'url' => ['/geonames/timezones/update-translations', 'id' => $model->id]],
                         '<hr>',
                         [
                             'label' => Module::t('geonames', 'Delete'),

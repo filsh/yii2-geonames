@@ -56,10 +56,7 @@ class CountryRunner extends \filsh\yii2\runner\BaseRunner
             }
 
             /* @var $country Country */
-            $country = Yii::createObject([
-                'class'    => Country::className(),
-                'scenario' => Country::SCENARIO_CREATE,
-            ]);
+            $country = Yii::createObject(Country::class);
             $attributes = [
                 'iso' => $data[0],
                 'iso3' => $data[1],

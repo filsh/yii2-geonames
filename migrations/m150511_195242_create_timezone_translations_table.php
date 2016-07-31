@@ -3,9 +3,8 @@
 use yii\db\Schema;
 use yii\db\Migration;
 use filsh\geonames\models\Timezone;
-use filsh\geonames\models\TimezoneTranslations;
 
-class m150511_195242_timezone_translations extends Migration
+class m150511_195242_create_timezone_translations_table extends Migration
 {
     public function up()
     {
@@ -14,19 +13,16 @@ class m150511_195242_timezone_translations extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-        $this->createTable(TimezoneTranslations::tableName(), [
-            'id' => Schema::TYPE_PK,
+        $this->createTable(Timezone\Translation::tableName(), [
             'timezone_id' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'language' =>  Schema::TYPE_STRING . '(6) NOT NULL',
-            'title' => Schema::TYPE_STRING . '(255) NOT NULL',
-            'create_time' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'update_time' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'FOREIGN KEY (timezone_id) REFERENCES ' . Timezone::tableName() . ' (id) ON DELETE CASCADE ON UPDATE CASCADE'
+            'language' => $this->string(16)->notNull(),
+            'title' => $this->string(255)->notNull(),
+            'CONSTRAINT fk_timezones_timezone_translations_timezone_id FOREIGN KEY (timezone_id) REFERENCES ' . Timezone::tableName() . ' (id) ON DELETE CASCADE ON UPDATE CASCADE'
         ], $tableOptions);
     }
 
     public function down()
     {
-        $this->dropTable(TimezoneTranslations::tableName());
+        $this->dropTable(Timezone\Translation::tableName());
     }
 }

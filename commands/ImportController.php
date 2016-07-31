@@ -15,7 +15,7 @@ class ImportController extends \yii\console\Controller
         }
         return $this->module->has('importer');
     }
-    
+
     /**
      * Import countries from external source.
      * This command load and parse countryinfo csv data file.
@@ -25,10 +25,10 @@ class ImportController extends \yii\console\Controller
     public function actionCountries()
     {
         $this->module->importer->run('CountryRunner');
-        
-        $this->stdout(Module::t('common', 'Countries has been imported') . "!\n", Console::FG_GREEN);
+
+        $this->stdout(Module::t('common', 'Countries has been imported') . "!\n", Console::FG_YELLOW);
     }
-    
+
     /**
      * Import timezones from external source.
      * This command load and parse timezones csv data file.
@@ -38,7 +38,7 @@ class ImportController extends \yii\console\Controller
     public function actionTimezones()
     {
         $this->module->importer->run('TimezoneRunner');
-        
-        $this->stdout(Module::t('common', 'Timezones has been imported') . "!\n", Console::FG_GREEN);
+
+        $this->stdout(Module::t('common', 'Timezones has been imported') . "!\n", Console::FG_YELLOW);
     }
 }

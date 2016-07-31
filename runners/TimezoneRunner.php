@@ -52,10 +52,7 @@ class TimezoneRunner extends \filsh\yii2\runner\BaseRunner
             }
 
             /* @var $timezone Timezone */
-            $timezone = Yii::createObject([
-                'class'    => Timezone::className(),
-                'scenario' => Timezone::SCENARIO_CREATE,
-            ]);
+            $timezone = Yii::createObject(Timezone::class);
             $attributes = [
                 'country' => $data[0],
                 'timezone' => $data[1],

@@ -2,48 +2,40 @@
 
 namespace filsh\geonames\models;
 
-use Yii;
 use yii\data\ActiveDataProvider;
+use yii\behaviors\TimestampBehavior;
+use creocoder\translateable\TranslateableBehavior;
 use filsh\geonames\Module;
 
 /**
  * This is the model class for table "{{%timezones}}".
  *
  * @property integer $id
+ * @property string $title
  * @property string $country
  * @property string $timezone
  * @property string $offset_gmt
  * @property string $offset_dst
  * @property string $offset_raw
  * @property integer $order_popular
- * @property integer $create_time
- * @property integer $update_time
+ * @property integer $created_at
+ * @property integer $updated_at
  *
  * @property Country $country
+ * @property Timezone\Translation[] $translations
  */
 class Timezone extends \yii\db\ActiveRecord
 {
-    const SCENARIO_CREATE = 'create';
-    const SCENARIO_UPDATE = 'update';
-    const SCENARIO_UPDATE_TRANSLATIONS = 'update-translations';
-
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
         return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'attributes' => [
-                    self::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
-                    self::EVENT_BEFORE_UPDATE => 'update_time',
-                ],
-            ],
-            'translations' => [
-                'class' => 'dosamigos\translateable\TranslateableBehavior',
-                'relation' => 'timezoneTranslations',
-                'translationAttributes' => ['title']
+            TimestampBehavior::class,
+            [
+                'class' => TranslateableBehavior::class,
+                'translationAttributes' => ['title'],
             ],
         ];
     }
@@ -51,12 +43,11 @@ class Timezone extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributes()
+    public function transactions()
     {
-        return array_merge(
-            parent::attributes(),
-            ['translations']
-        );
+        return [
+            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
+        ];
     }
 
     /**
@@ -76,6 +67,7 @@ class Timezone extends \yii\db\ActiveRecord
             [['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw'], 'required'],
             [['offset_gmt', 'offset_dst', 'offset_raw'], 'number'],
             [['order_popular'], 'integer'],
+            [['title'], 'string', 'max' => 255],
             [['country'], 'string', 'max' => 2],
             [['timezone'], 'string', 'max' => 255],
             [['country', 'timezone'], 'unique', 'targetAttribute' => ['country', 'timezone'], 'message' => 'The combination of Country and Timezone has already been taken.'],
@@ -86,30 +78,19 @@ class Timezone extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
-        return [
-            self::SCENARIO_CREATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw', 'order_popular'],
-            self::SCENARIO_UPDATE => ['country', 'timezone', 'offset_gmt', 'offset_dst', 'offset_raw', 'order_popular'],
-            self::SCENARIO_UPDATE_TRANSLATIONS => ['translations'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
             'id' => Module::t('geonames', 'ID'),
+            'title' => Module::t('geonames', 'Title'),
             'country' => Module::t('geonames', 'Country'),
             'timezone' => Module::t('geonames', 'Timezone'),
             'offset_gmt' => Module::t('geonames', 'Offset Gmt'),
             'offset_dst' => Module::t('geonames', 'Offset Dst'),
             'offset_raw' => Module::t('geonames', 'Offset Raw'),
             'order_popular' => Module::t('geonames', 'Order Popular'),
-            'create_time' => Module::t('geonames', 'Create Time'),
-            'update_time' => Module::t('geonames', 'Update Time'),
+            'created_at' => Module::t('geonames', 'Create Time'),
+            'updated_at' => Module::t('geonames', 'Update Time'),
         ];
     }
 
@@ -118,37 +99,48 @@ class Timezone extends \yii\db\ActiveRecord
      */
     public function getCountry()
     {
-        return $this->hasOne(Country::className(), ['iso' => 'country']);
+        return $this->hasOne(Country::class, ['iso' => 'country']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTimezoneTranslation()
+    public function getTranslations()
     {
-        return $this->hasOne(TimezoneTranslations::className(), ['timezone_id' => 'id']);
+        return $this->hasMany(Timezone\Translation::class, ['timezone_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @param $params
+     * @return ActiveDataProvider
      */
-    public function getTimezoneTranslations()
+    public function search($params)
     {
-        return $this->hasMany(TimezoneTranslations::className(), ['timezone_id' => 'id']);
-    }
+        $query = self::find();
+        $query->joinWith(['translations']);
 
-    public function saveTranslations()
-    {
-        return $this->getDb()->transaction(function() {
-            TimezoneTranslations::deleteAll(['timezone_id' => $this->id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $dataProvider->sort->attributes['title'] = [
+            'asc'  => ['title' => SORT_ASC],
+            'desc' => ['title' => SORT_DESC],
+        ];
 
-            foreach($this->translations as $language => $translation) {
-                $this->language = $language;
-                $this->title = $translation;
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
 
-                $this->saveTranslation();
-            }
-            return true;
-        });
+        $query
+            ->andFilterWhere(['title' => $this->title])
+            ->andFilterWhere(['country' => $this->country])
+            ->andFilterWhere(['like', 'timezone', $this->timezone])
+            ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['offset_gmt' => $this->offset_gmt])
+            ->andFilterWhere(['offset_dst' => $this->offset_dst])
+            ->andFilterWhere(['offset_raw' => $this->offset_raw])
+            ->andFilterWhere(['order_popular' => $this->order_popular]);
+
+        return $dataProvider;
     }
 }
