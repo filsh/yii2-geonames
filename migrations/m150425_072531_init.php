@@ -2,8 +2,8 @@
 
 use yii\db\Schema;
 use yii\db\Migration;
-use filsh\geonames\models\Timezones;
-use filsh\geonames\models\Countries;
+use filsh\geonames\models\Timezone;
+use filsh\geonames\models\Country;
 
 class m150425_072531_init extends Migration
 {
@@ -13,8 +13,8 @@ class m150425_072531_init extends Migration
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
-        
-        $this->createTable(Countries::tableName(), [
+
+        $this->createTable(Country::tableName(), [
             'id' => Schema::TYPE_PK,
             'iso' => Schema::TYPE_STRING . '(2) NOT NULL',
             'iso3' => Schema::TYPE_STRING . '(3) NOT NULL',
@@ -37,26 +37,27 @@ class m150425_072531_init extends Migration
             'equivalent_fips_code' => Schema::TYPE_STRING . '(255) DEFAULT NULL',
             'create_time' => Schema::TYPE_INTEGER.' NOT NULL',
             'update_time' => Schema::TYPE_INTEGER.' NOT NULL',
-            'UNIQUE KEY(`iso`)'
+            'UNIQUE (iso)'
         ], $tableOptions);
-        
-        $this->createTable(Timezones::tableName(), [
+
+        $this->createTable(Timezone::tableName(), [
             'id' => Schema::TYPE_PK,
             'country' => Schema::TYPE_STRING . '(2) NOT NULL',
             'timezone' => Schema::TYPE_STRING . '(255) NOT NULL',
             'offset_gmt' => Schema::TYPE_DECIMAL . '(3,1) NOT NULL',
             'offset_dst' => Schema::TYPE_DECIMAL . '(3,1) NOT NULL',
             'offset_raw' => Schema::TYPE_DECIMAL . '(3,1) NOT NULL',
+            'order_popular' => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 0',
             'create_time' => Schema::TYPE_INTEGER . ' NOT NULL',
             'update_time' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'UNIQUE KEY (`country`, `timezone`)',
-            'FOREIGN KEY (`country`) REFERENCES ' . Countries::tableName() . ' (`iso`) ON DELETE CASCADE ON UPDATE CASCADE'
+            'UNIQUE (country, timezone)',
+            'FOREIGN KEY (country) REFERENCES ' . Country::tableName() . ' (iso) ON DELETE CASCADE ON UPDATE CASCADE'
         ], $tableOptions);
     }
 
     public function down()
     {
-        $this->dropTable(Timezones::tableName());
-        $this->dropTable(Countries::tableName());
+        $this->dropTable(Timezone::tableName());
+        $this->dropTable(Country::tableName());
     }
 }

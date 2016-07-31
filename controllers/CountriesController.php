@@ -3,7 +3,7 @@
 namespace filsh\geonames\controllers;
 
 use Yii;
-use filsh\geonames\models\Countries;
+use filsh\geonames\models\Country;
 
 class CountriesController extends \yii\web\Controller
 {
@@ -11,8 +11,8 @@ class CountriesController extends \yii\web\Controller
     {
         /* @var $filterModel Countries */
         $filterModel = Yii::createObject([
-            'class'    => Countries::className(),
-            'scenario' => Countries::SCENARIO_SEARCH,
+            'class'    => Country::className(),
+            'scenario' => Country::SCENARIO_SEARCH,
         ]);
         $dataProvider = $filterModel->search(Yii::$app->request->get());
 

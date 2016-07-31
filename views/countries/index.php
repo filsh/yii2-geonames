@@ -1,7 +1,7 @@
 <?php
 
 use filsh\geonames\Module;
-use filsh\geonames\models\Countries;
+use filsh\geonames\models\Country;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
@@ -9,7 +9,7 @@ use yii\helpers\Url;
 /**
  * @var View $this
  * @var ActiveDataProvider $dataProvider
- * @var Countries $filterModel
+ * @var Country $filterModel
  */
 
 $this->title = Module::t('geonames', 'Countries');

@@ -2,7 +2,7 @@
 
 use yii\db\Schema;
 use yii\db\Migration;
-use filsh\geonames\models\Timezones;
+use filsh\geonames\models\Timezone;
 use filsh\geonames\models\TimezoneTranslations;
 
 class m150511_195242_timezone_translations extends Migration
@@ -13,7 +13,7 @@ class m150511_195242_timezone_translations extends Migration
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
-        
+
         $this->createTable(TimezoneTranslations::tableName(), [
             'id' => Schema::TYPE_PK,
             'timezone_id' => Schema::TYPE_INTEGER . ' NOT NULL',
@@ -21,7 +21,7 @@ class m150511_195242_timezone_translations extends Migration
             'title' => Schema::TYPE_STRING . '(255) NOT NULL',
             'create_time' => Schema::TYPE_INTEGER . ' NOT NULL',
             'update_time' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'FOREIGN KEY (`timezone_id`) REFERENCES ' . Timezones::tableName() . ' (`id`) ON DELETE CASCADE ON UPDATE CASCADE'
+            'FOREIGN KEY (timezone_id) REFERENCES ' . Timezone::tableName() . ' (id) ON DELETE CASCADE ON UPDATE CASCADE'
         ], $tableOptions);
     }
 

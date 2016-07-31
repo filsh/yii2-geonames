@@ -2,7 +2,7 @@
 
 /**
  * @var yii\widgets\ActiveForm    $form
- * @var filsh\geonames\models\Timezones $model
+ * @var filsh\geonames\models\Timezone $model
  */
 ?>
 

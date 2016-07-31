@@ -3,15 +3,15 @@
 namespace filsh\geonames\runners;
 
 use Yii;
-use filsh\geonames\models\Countries;
+use filsh\geonames\models\Country;
 use filsh\geonames\helpers\FileHelper;
 
 class CountryRunner extends \filsh\yii2\runner\BaseRunner
 {
     const SOURCE_URL = 'http://download.geonames.org/export/dump/countryInfo.txt';
-    
-    public $tmpPath = '@runtime/runner/countries';
-    
+
+    public $tmpPath = '@runtime/runner/Country';
+
     protected function doRun()
     {
         FileHelper::loadFile($this->getSourceUrl(), [
@@ -20,26 +20,26 @@ class CountryRunner extends \filsh\yii2\runner\BaseRunner
                 $this->resolveFile($file);
             }
         ]);
-        
+
         FileHelper::removeDirectory($this->tmpPath);
     }
-    
+
     protected function getSourceUrl()
     {
         return self::SOURCE_URL;
     }
-    
+
     public function resolveFile($file)
     {
         if(!is_file($file)) {
             throw new \yii\base\Exception('Source file not found.');
         }
-        
+
         Yii::$app->db->transaction(function() use($file) {
             $this->applyCsv($file);
         });
     }
-    
+
     /**
      * @see https://github.com/debuggable/php_arrays/tree/master/generators
      * @param type $file
@@ -49,16 +49,16 @@ class CountryRunner extends \filsh\yii2\runner\BaseRunner
         if(($handle = fopen($file, 'r')) === false) {
             return;
         }
-        
+
         while(($data = fgetcsv($handle, 0, "\t")) !== false) {
             if(count($data) == 1 || preg_match('/^#/', $data[0])) {
                 continue;
             }
-            
-            /* @var $country Countries */
+
+            /* @var $country Country */
             $country = Yii::createObject([
-                'class'    => Countries::className(),
-                'scenario' => Countries::SCENARIO_CREATE,
+                'class'    => Country::className(),
+                'scenario' => Country::SCENARIO_CREATE,
             ]);
             $attributes = [
                 'iso' => $data[0],
@@ -81,17 +81,17 @@ class CountryRunner extends \filsh\yii2\runner\BaseRunner
                 'neighbours' => $data[17],
                 'equivalent_fips_code' => $data[18],
             ];
-            
+
             $exists = $country
                 ->find()
                 ->where('iso = :iso', [
                     ':iso' => $attributes['iso']
                 ])
                 ->exists();
-            
+
             if(!$exists) {
                 $country->setAttributes($attributes);
-                
+
                 if(!$country->save()) {
                     throw new \yii\base\InvalidParamException('Unable to create country.');
                 }

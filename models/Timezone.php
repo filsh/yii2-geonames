@@ -19,14 +19,14 @@ use filsh\geonames\Module;
  * @property integer $create_time
  * @property integer $update_time
  *
- * @property Countries $country0
+ * @property Country $country
  */
-class Timezones extends \yii\db\ActiveRecord
+class Timezone extends \yii\db\ActiveRecord
 {
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
     const SCENARIO_UPDATE_TRANSLATIONS = 'update-translations';
-    
+
     /**
      * @inheritdoc
      */
@@ -47,7 +47,7 @@ class Timezones extends \yii\db\ActiveRecord
             ],
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -58,7 +58,7 @@ class Timezones extends \yii\db\ActiveRecord
             ['translations']
         );
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -82,7 +82,7 @@ class Timezones extends \yii\db\ActiveRecord
             [['translations'], 'safe']
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -112,15 +112,15 @@ class Timezones extends \yii\db\ActiveRecord
             'update_time' => Module::t('geonames', 'Update Time'),
         ];
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getCountry()
     {
-        return $this->hasOne(Countries::className(), ['iso' => 'country']);
+        return $this->hasOne(Country::className(), ['iso' => 'country']);
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -128,7 +128,7 @@ class Timezones extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TimezoneTranslations::className(), ['timezone_id' => 'id']);
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -136,7 +136,7 @@ class Timezones extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TimezoneTranslations::className(), ['timezone_id' => 'id']);
     }
-    
+
     public function saveTranslations()
     {
         return $this->getDb()->transaction(function() {
@@ -145,7 +145,7 @@ class Timezones extends \yii\db\ActiveRecord
             foreach($this->translations as $language => $translation) {
                 $this->language = $language;
                 $this->title = $translation;
-                
+
                 $this->saveTranslation();
             }
             return true;

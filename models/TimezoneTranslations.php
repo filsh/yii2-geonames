@@ -14,7 +14,7 @@ use Yii;
  * @property integer $create_time
  * @property integer $update_time
  *
- * @property Timezones $timezone
+ * @property Timezone $timezone
  */
 class TimezoneTranslations extends \yii\db\ActiveRecord
 {
@@ -33,7 +33,7 @@ class TimezoneTranslations extends \yii\db\ActiveRecord
             ],
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -75,6 +75,6 @@ class TimezoneTranslations extends \yii\db\ActiveRecord
      */
     public function getTimezone()
     {
-        return $this->hasOne(Timezones::className(), ['id' => 'timezone_id']);
+        return $this->hasOne(Timezone::className(), ['id' => 'timezone_id']);
     }
 }

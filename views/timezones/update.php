@@ -1,14 +1,13 @@
 <?php
 
-use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use filsh\geonames\Module;
 
 /* @var $this yii\web\View */
-/* @var $model filsh\geonames\models\Timezones */
+/* @var $model filsh\geonames\models\Timezone */
 
 $this->title = Module::t('geonames', 'Update {modelClass}: ', [
-    'modelClass' => 'Timezones',
+    'modelClass' => 'Timezone',
 ]) . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => Module::t('geonames', 'Timezones'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];

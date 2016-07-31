@@ -8,7 +8,7 @@ use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\web\NotFoundHttpException;
 use filsh\geonames\Module;
-use filsh\geonames\models\Timezones;
+use filsh\geonames\models\Timezone;
 use filsh\geonames\models\TimezoneSearch;
 
 class TimezonesController extends \yii\web\Controller
@@ -24,7 +24,7 @@ class TimezonesController extends \yii\web\Controller
             ],
         ];
     }
-    
+
     /**
      * Lists all Timezones models.
      * @return mixed
@@ -40,20 +40,20 @@ class TimezonesController extends \yii\web\Controller
             'filterModel'  => $filterModel,
         ]);
     }
-    
+
     /**
-     * Creates a new Timezones model.
+     * Creates a new Timezone model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        /** @var Timezones $model */
+        /** @var Timezone $model */
         $model = Yii::createObject([
-            'class'    => Timezones::className(),
-            'scenario' => Timezones::SCENARIO_CREATE,
+            'class'    => Timezone::className(),
+            'scenario' => Timezone::SCENARIO_CREATE,
         ]);
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -64,7 +64,7 @@ class TimezonesController extends \yii\web\Controller
     }
 
     /**
-     * Updates an existing Timezones model.
+     * Updates an existing Timezone model.
      * If update is successful, the browser will be refreshed page.
      * @param integer $id
      * @return mixed
@@ -72,10 +72,10 @@ class TimezonesController extends \yii\web\Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = Timezones::SCENARIO_UPDATE;
+        $model->scenario = Timezone::SCENARIO_UPDATE;
 
         $this->performAjaxValidation($model);
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone details have been updated'));
             return $this->refresh();
@@ -85,9 +85,9 @@ class TimezonesController extends \yii\web\Controller
             ]);
         }
     }
-    
+
     /**
-     * Updates an translations for existing Timezones model.
+     * Updates an translations for existing Timezone model.
      * If update is successful, the browser will be refreshed page.
      * @param integer $id
      * @return mixed
@@ -95,10 +95,10 @@ class TimezonesController extends \yii\web\Controller
     public function actionUpdateTranslations($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = Timezones::SCENARIO_UPDATE_TRANSLATIONS;
+        $model->scenario = Timezone::SCENARIO_UPDATE_TRANSLATIONS;
 
         $this->performAjaxValidation($model);
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->saveTranslations()) {
             Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone translations have been updated'));
             return $this->refresh();
@@ -108,9 +108,9 @@ class TimezonesController extends \yii\web\Controller
             ]);
         }
     }
-    
+
     /**
-     * Deletes an existing Timezones model.
+     * Deletes an existing Timezone model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param  integer $id
      * @return mixed
@@ -119,28 +119,28 @@ class TimezonesController extends \yii\web\Controller
     {
         $this->findModel($id)->delete();
         Yii::$app->getSession()->setFlash('success', Module::t('geonames', 'Timezone has been deleted'));
-        
+
         return $this->redirect(['index']);
     }
-    
+
     /**
-     * Finds the Timezones model based on its primary key value.
+     * Finds the Timezone model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Timezones the loaded model
+     * @return Timezone the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        /** @var Timezones $model */
-        $model = Yii::createObject(Timezones::className());
+        /** @var Timezone $model */
+        $model = Yii::createObject(Timezone::className());
         if (($model = $model::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
+
     /**
      * Performs AJAX validation.
      * @param array|Model $model

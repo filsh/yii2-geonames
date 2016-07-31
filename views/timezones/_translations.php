@@ -1,12 +1,11 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use filsh\geonames\Module;
@@ -28,7 +27,7 @@ use filsh\geonames\Module;
     <?php
         foreach(Yii::$app->controller->module->supportLanguages as $language) {
             $model->language = $language;
-            
+
             echo $form->field($model, 'title')
                 ->textInput([
                     'id' => 'timezones-title-' . $language,

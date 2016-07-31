@@ -1,8 +1,7 @@
 <?php
 
-use Yii;
 use filsh\geonames\Module;
-use filsh\geonames\models\Timezones;
+use filsh\geonames\models\Timezone;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
@@ -10,7 +9,7 @@ use yii\helpers\Url;
 /**
  * @var View $this
  * @var ActiveDataProvider $dataProvider
- * @var Timezones $filterModel
+ * @var Timezone $filterModel
  */
 
 $this->title = Module::t('geonames', 'Timezones');

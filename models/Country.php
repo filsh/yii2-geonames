@@ -32,13 +32,13 @@ use yii\data\ActiveDataProvider;
  * @property integer $create_time
  * @property integer $update_time
  *
- * @property Timezones[] $timezones
+ * @property Timezone[] $timezones
  */
-class Countries extends \yii\db\ActiveRecord
+class Country extends \yii\db\ActiveRecord
 {
     const SCENARIO_CREATE = 'create';
     const SCENARIO_SEARCH = 'search';
-    
+
     /**
      * @inheritdoc
      */
@@ -54,7 +54,7 @@ class Countries extends \yii\db\ActiveRecord
             ]
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -79,7 +79,7 @@ class Countries extends \yii\db\ActiveRecord
             [['iso'], 'unique']
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -121,15 +121,15 @@ class Countries extends \yii\db\ActiveRecord
             'update_time' => Module::t('geonames', 'Update Time'),
         ];
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getTimezones()
     {
-        return $this->hasMany(Timezones::className(), ['country' => 'iso']);
+        return $this->hasMany(Timezone::className(), ['country' => 'iso']);
     }
-    
+
     /**
      * @param $params
      * @return ActiveDataProvider

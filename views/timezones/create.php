@@ -5,7 +5,7 @@ use yii\bootstrap\Nav;
 use filsh\geonames\Module;
 
 /* @var $this yii\web\View */
-/* @var $model filsh\geonames\models\Timezones */
+/* @var $model filsh\geonames\models\Timezone */
 
 $this->title = Module::t('geonames', 'Create Timezones');
 $this->params['breadcrumbs'][] = ['label' => Module::t('geonames', 'Timezones'), 'url' => ['index']];
