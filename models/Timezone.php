@@ -109,38 +109,4 @@ class Timezone extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Timezone\Translation::class, ['timezone_id' => 'id']);
     }
-
-    /**
-     * @param $params
-     * @return ActiveDataProvider
-     */
-    public function search($params)
-    {
-        $query = self::find();
-        $query->joinWith(['translations']);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-        $dataProvider->sort->attributes['title'] = [
-            'asc'  => ['title' => SORT_ASC],
-            'desc' => ['title' => SORT_DESC],
-        ];
-
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
-        }
-
-        $query
-            ->andFilterWhere(['title' => $this->title])
-            ->andFilterWhere(['country' => $this->country])
-            ->andFilterWhere(['like', 'timezone', $this->timezone])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['offset_gmt' => $this->offset_gmt])
-            ->andFilterWhere(['offset_dst' => $this->offset_dst])
-            ->andFilterWhere(['offset_raw' => $this->offset_raw])
-            ->andFilterWhere(['order_popular' => $this->order_popular]);
-
-        return $dataProvider;
-    }
 }

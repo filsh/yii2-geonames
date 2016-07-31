@@ -27,7 +27,7 @@ class Module extends \yii\base\Module
     /**
      * @var array
      */
-    public $supportLanguages = ['en-US', 'ru-RU'];
+    public $supportLanguages = ['ru-RU'];
 
     /**
      * @inheritdoc

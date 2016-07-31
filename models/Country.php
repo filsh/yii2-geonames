@@ -4,6 +4,7 @@ namespace filsh\geonames\models;
 
 use yii\data\ActiveDataProvider;
 use yii\behaviors\TimestampBehavior;
+use creocoder\translateable\TranslateableBehavior;
 use filsh\geonames\Module;
 
 /**
@@ -43,6 +44,20 @@ class Country extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            [
+                'class' => TranslateableBehavior::class,
+                'translationAttributes' => ['name', 'capital', 'currency_name'],
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_INSERT | self::OP_UPDATE,
         ];
     }
 
@@ -67,7 +82,7 @@ class Country extends \yii\db\ActiveRecord
             [['iso3', 'fips', 'tld', 'currency_code'], 'string', 'max' => 3],
             [['name', 'capital', 'phone_code', 'postal_code_format', 'postal_code_regex', 'languages', 'neighbours', 'equivalent_fips_code'], 'string', 'max' => 255],
             [['currency_name'], 'string', 'max' => 20],
-            [['iso'], 'unique']
+            [['iso', 'iso3'], 'unique'],
         ];
     }
 
@@ -100,6 +115,14 @@ class Country extends \yii\db\ActiveRecord
             'created_at' => Module::t('geonames', 'Create Time'),
             'updated_at' => Module::t('geonames', 'Update Time'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTranslations()
+    {
+        return $this->hasMany(Country\Translation::class, ['country_id' => 'id']);
     }
 
     /**

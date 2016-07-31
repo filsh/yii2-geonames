@@ -31,38 +31,13 @@ class TimezonesController extends \yii\web\Controller
     public function actionIndex()
     {
         /* @var $filterModel Timezone */
-        $filterModel = Yii::createObject(Timezone::class);
+        $filterModel = Yii::createObject(Timezone\Form\Search::class);
         $dataProvider = $filterModel->search(Yii::$app->request->get());
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'filterModel'  => $filterModel,
         ]);
-    }
-
-    /**
-     * Creates a new Timezone model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        /** @var Timezone $model */
-        $model = Yii::createObject(Timezone::class);
-
-        foreach (Yii::$app->request->post('Translation', []) as $language => $data) {
-            foreach ($data as $attribute => $translation) {
-                $model->translate($language)->$attribute = $translation;
-            }
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**
@@ -78,6 +53,9 @@ class TimezonesController extends \yii\web\Controller
 
         foreach (Yii::$app->request->post('Translation', []) as $language => $data) {
             foreach ($data as $attribute => $translation) {
+                if(empty($translation)) {
+                    continue;
+                }
                 $model->translate($language)->$attribute = $translation;
             }
         }

@@ -36,7 +36,8 @@ class m150425_072531_create_countries_table extends Migration
             'equivalent_fips_code' => Schema::TYPE_STRING . '(255) DEFAULT NULL',
             'created_at' => Schema::TYPE_INTEGER.' NOT NULL',
             'updated_at' => Schema::TYPE_INTEGER.' NOT NULL',
-            'UNIQUE (iso)'
+            'UNIQUE (iso)',
+            'UNIQUE (iso3)',
         ], $tableOptions);
     }
 

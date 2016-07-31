@@ -28,14 +28,56 @@ $this->params['breadcrumbs'][] = $this->title;
         'iso3',
         'iso_numeric',
         'fips',
-        'name',
-        'capital',
+        [
+            'attribute' => 'name',
+            'format' => 'raw',
+            'value' => function($model) {
+                $names = [$model->name];
+                foreach(Module::getInstance()->supportLanguages as $language) {
+                    if(($name = $model->translate($language)->name) !== null) {
+                        $names[] = $name . '(' . $language . ')';
+                    }
+                }
+                if(!empty($names)) {
+                    return implode($names, '</br>');
+                }
+            }
+        ],
+        [
+            'attribute' => 'capital',
+            'format' => 'raw',
+            'value' => function($model) {
+                $names = [$model->capital];
+                foreach(Module::getInstance()->supportLanguages as $language) {
+                    if(($name = $model->translate($language)->capital) !== null) {
+                        $names[] = $name . '(' . $language . ')';
+                    }
+                }
+                if(!empty($names)) {
+                    return implode($names, '</br>');
+                }
+            }
+        ],
         'area',
         'population',
         'continent',
         'tld',
         'currency_code',
-        'currency_name',
+        [
+            'attribute' => 'currency_name',
+            'format' => 'raw',
+            'value' => function($model) {
+                $names = [$model->currency_name];
+                foreach(Module::getInstance()->supportLanguages as $language) {
+                    if(($name = $model->translate($language)->currency_name) !== null) {
+                        $names[] = $name . '(' . $language . ')';
+                    }
+                }
+                if(!empty($names)) {
+                    return implode($names, '</br>');
+                }
+            }
+        ],
         'phone_code',
         'postal_code_format',
         'postal_code_regex',

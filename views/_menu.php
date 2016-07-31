@@ -22,18 +22,5 @@ use filsh\geonames\Module;
             'label'   => Module::t('geonames', 'Countries'),
             'url'     => ['/geonames/countries/index']
         ],
-        [
-            'label' => Module::t('geonames', 'Create'),
-            'items' => [
-                [
-                    'label'   => Module::t('geonames', 'New timezone'),
-                    'url'     => ['/geonames/timezones/create']
-                ],
-                [
-                    'label'   => Module::t('geonames', 'New country'),
-                    'url'     => ['/geonames/countries/create']
-                ]
-            ]
-        ]
     ]
 ]) ?>

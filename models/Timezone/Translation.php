@@ -6,7 +6,7 @@ use filsh\geonames\Module;
 use filsh\geonames\models\Timezone;
 
 /**
- * This is the model class for table "{{%timezones_translation}}".
+ * This is the model class for table "{{%timezone_translations}}".
  *
  * @property integer $timezone_id
  * @property string $language
