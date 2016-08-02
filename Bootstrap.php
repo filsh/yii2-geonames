@@ -19,6 +19,7 @@ class Bootstrap implements \yii\base\BootstrapInterface
      */
     private $_runnerMap = [
         'CountryRunner' => 'filsh\geonames\runners\CountryRunner',
+        'CountryTranslateRunner' => 'filsh\geonames\runners\CountryTranslateRunner',
         'TimezoneRunner' => 'filsh\geonames\runners\TimezoneRunner',
     ];
 
