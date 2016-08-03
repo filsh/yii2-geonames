@@ -19,7 +19,8 @@ class m150511_195243_create_country_translations_table extends Migration
             'name' => $this->string(255)->notNull(),
             'capital' => $this->string(255)->notNull(),
             'currency_name' => $this->string(255)->notNull(),
-            'CONSTRAINT fk_countries_country_translations_country_id FOREIGN KEY (country_id) REFERENCES ' . Country::tableName() . ' (id) ON DELETE CASCADE ON UPDATE CASCADE'
+            'CONSTRAINT fk_countries_country_translations_country_id FOREIGN KEY (country_id) REFERENCES ' . Country::tableName() . ' (id) ON DELETE CASCADE ON UPDATE CASCADE',
+            'PRIMARY KEY(country_id, language)',
         ], $tableOptions);
     }
 

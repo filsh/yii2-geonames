@@ -17,7 +17,8 @@ class m150511_195242_create_timezone_translations_table extends Migration
             'timezone_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'language' => $this->string(16)->notNull(),
             'title' => $this->string(255)->notNull(),
-            'CONSTRAINT fk_timezones_timezone_translations_timezone_id FOREIGN KEY (timezone_id) REFERENCES ' . Timezone::tableName() . ' (id) ON DELETE CASCADE ON UPDATE CASCADE'
+            'CONSTRAINT fk_timezones_timezone_translations_timezone_id FOREIGN KEY (timezone_id) REFERENCES ' . Timezone::tableName() . ' (id) ON DELETE CASCADE ON UPDATE CASCADE',
+            'PRIMARY KEY(timezone_id, language)',
         ], $tableOptions);
     }
 
