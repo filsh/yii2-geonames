@@ -10,7 +10,7 @@ use filsh\geonames\Module;
 
 <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-<?php foreach(Module::getInstance()->supportLanguages as $language) {
+<?php foreach(Module::getInstance()->translateLanguages as $language) {
     echo $form->field($model->translate($language), "[$language]title")->textInput(['maxlength' => true]);
 } ?>
 

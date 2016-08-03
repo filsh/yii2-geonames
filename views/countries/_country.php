@@ -18,13 +18,13 @@ use filsh\geonames\Module;
 
 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-<?php foreach(Module::getInstance()->supportLanguages as $language) {
+<?php foreach(Module::getInstance()->translateLanguages as $language) {
     echo $form->field($model->translate($language), "[$language]name")->textInput(['maxlength' => true]);
 } ?>
 
 <?= $form->field($model, 'capital')->textInput(['maxlength' => true]) ?>
 
-<?php foreach(Module::getInstance()->supportLanguages as $language) {
+<?php foreach(Module::getInstance()->translateLanguages as $language) {
     echo $form->field($model->translate($language), "[$language]capital")->textInput(['maxlength' => true]);
 } ?>
 
@@ -40,7 +40,7 @@ use filsh\geonames\Module;
 
 <?= $form->field($model, 'currency_name')->textInput(['maxlength' => true]) ?>
 
-<?php foreach(Module::getInstance()->supportLanguages as $language) {
+<?php foreach(Module::getInstance()->translateLanguages as $language) {
     echo $form->field($model->translate($language), "[$language]currency_name")->textInput(['maxlength' => true]);
 } ?>
 

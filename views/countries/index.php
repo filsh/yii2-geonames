@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'value' => function($model) {
                 $names = [$model->name];
-                foreach(Module::getInstance()->supportLanguages as $language) {
+                foreach(Module::getInstance()->translateLanguages as $language) {
                     if(($name = $model->translate($language)->name) !== null) {
                         $names[] = $name . '(' . $language . ')';
                     }
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'value' => function($model) {
                 $names = [$model->capital];
-                foreach(Module::getInstance()->supportLanguages as $language) {
+                foreach(Module::getInstance()->translateLanguages as $language) {
                     if(($name = $model->translate($language)->capital) !== null) {
                         $names[] = $name . '(' . $language . ')';
                     }
@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'value' => function($model) {
                 $names = [$model->currency_name];
-                foreach(Module::getInstance()->supportLanguages as $language) {
+                foreach(Module::getInstance()->translateLanguages as $language) {
                     if(($name = $model->translate($language)->currency_name) !== null) {
                         $names[] = $name . '(' . $language . ')';
                     }

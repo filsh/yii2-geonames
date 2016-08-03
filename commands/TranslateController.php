@@ -2,7 +2,6 @@
 
 namespace filsh\geonames\commands;
 
-use Yii;
 use filsh\geonames\Module;
 use yii\helpers\Console;
 
@@ -24,8 +23,8 @@ class TranslateController extends \yii\console\Controller
      */
     public function actionCountries($language)
     {
-        if(!in_array($language, Module::getInstance()->supportLanguages)) {
-            $this->stdout("Not supported language code, available codes: [" . implode(', ', $languages) . "].\n", Console::FG_RED);
+        if(!in_array($language, Module::getInstance()->translateLanguages)) {
+            $this->stdout("Not supported language code, available codes: [" . implode(', ', Module::getInstance()->translateLanguages) . "].\n", Console::FG_RED);
             return self::EXIT_CODE_ERROR;
         }
 

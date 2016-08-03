@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'value' => function($model) {
                 $titles = [$model->title];
-                foreach(Module::getInstance()->supportLanguages as $language) {
+                foreach(Module::getInstance()->translateLanguages as $language) {
                     if(($title = $model->translate($language)->title) !== null) {
                         $titles[] = $title . '(' . $language . ')';
                     }

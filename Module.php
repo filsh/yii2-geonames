@@ -27,7 +27,12 @@ class Module extends \yii\base\Module
     /**
      * @var array
      */
-    public $supportLanguages = ['ru-RU'];
+    public $supportedLanguages = ['ru-RU'];
+
+    /**
+     * @var array
+     */
+    protected $translateLanguages;
 
     /**
      * @inheritdoc
@@ -44,6 +49,22 @@ class Module extends \yii\base\Module
             'class' => PhpMessageSource::class,
             'basePath' => __DIR__ . '/messages',
         ];
+    }
+
+    public function getTranslateLanguages()
+    {
+        if($this->translateLanguages !== null) {
+            return $this->translateLanguages;
+        }
+
+        $this->translateLanguages = array_map(function($language) {
+            return str_replace('_', '-', $language);
+        }, $this->supportedLanguages);
+
+        if(($key = array_search(\Yii::$app->sourceLanguage, $this->translateLanguages)) !== false) {
+            unset($this->translateLanguages[$key]);
+        }
+        return $this->translateLanguages;
     }
 
     public static function t($category, $message, $params = [], $language = null)
